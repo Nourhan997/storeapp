@@ -1,21 +1,53 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { createAppContainer } from "react-navigation";
+import { createDrawerNavigator } from "react-navigation-drawer";
+import { createStackNavigator } from "react-navigation-stack";
+import HomeScreen from "./src/screens/Home/HomeScreen";
+import CategoriesScreen from "./src/screens/Categories/CategoriesScreen";
+import ItemScreen from "./src/screens/Item/ItemScreen";
+import CateogryListScreen from "./src/screens/CateogryList/CateogryListScreen";
+import DrawerContainer from "./src/screens/DrawerContainer/DrawerContainer";
+import SearchScreen from "./src/screens/Search/SearchScreen";
+import AddScreen from "./src/screens/Form/AddScreen";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+const MainNavigator = createStackNavigator(
+  {
+    Home: HomeScreen,
+    Categories: CategoriesScreen,
+    Item: ItemScreen,
+    Create: AddScreen,
+    List: CateogryListScreen,
+    Search: SearchScreen,
+  },
+  {
+    initialRouteName: "Home",
+    defaulfNavigationOptions: {
+      headerTitleStyle: {
+        fontWeight: "bold",
+        textAlign: "center",
+        alignSelf: "center",
+        flex: 1,
+      },
+    },
+  }
+);
+
+const DrawerStack = createDrawerNavigator(
+  {
+    Main: MainNavigator,
+  },
+  {
+    drawerPosition: "left",
+    initialRouteName: "Main",
+    drawerWidth: 250,
+    contentComponent: DrawerContainer,
+  }
+);
+
+const AppContainer = createAppContainer(DrawerStack);
+
+function App() {
+  return <AppContainer />;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
